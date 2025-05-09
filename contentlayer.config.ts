@@ -9,27 +9,28 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import readingTime from "reading-time";
 import rehypePrettyCode from "rehype-pretty-code";
 
-export const CloudinaryImage = defineNestedType(() => ({
-  name: "CloudinaryImage",
-  displayName: "Cloudinary Image",
-  fields: {
-    height: {
-      type: "number",
-      description: "Height of the image",
-      required: true,
-    },
-    width: {
-      type: "number",
-      description: "Width of the image",
-      required: true,
-    },
-    url: {
-      type: "string",
-      description: "URL of the image",
-      required: true,
-    },
-  },
-}));
+
+// export const CloudinaryImage = defineNestedType(() => ({
+//   name: "CloudinaryImage",
+//   displayName: "Cloudinary Image",
+//   fields: {
+//     height: {
+//       type: "number",
+//       description: "Height of the image",
+//       required: true,
+//     },
+//     width: {
+//       type: "number",
+//       description: "Width of the image",
+//       required: true,
+//     },
+//     url: {
+//       type: "string",
+//       description: "URL of the image",
+//       required: true,
+//     },
+//   },
+// }));
 
 export const Proof = defineNestedType(() => ({
   name: "Proof",
@@ -78,11 +79,11 @@ export const Project = defineDocumentType(() => ({
       description: "The name of the icon to use",
       required: true,
     },
-    image: {
-      type: "nested",
-      description: "Image for the project",
-      of: CloudinaryImage,
-    },
+    // image: {
+    //   type: "nested",
+    //   description: "Image for the project",
+    //   of: CloudinaryImage,
+    // },
   },
   computedFields: {
     slug: {
@@ -112,11 +113,11 @@ export const BlogPost = defineDocumentType(() => ({
       description: "The link to the blog post",
       required: false,
     },
-    image: {
-      type: "nested",
-      description: "Image for the blog post",
-      of: CloudinaryImage,
-    },
+    // image: {
+    //   type: "nested",
+    //   description: "Image for the blog post",
+    //   of: CloudinaryImage,
+    // },
   },
   computedFields: {
     slug: {
@@ -166,9 +167,66 @@ export const Achievement = defineDocumentType(() => ({
   },
 }));
 
+export const Hashnode = defineDocumentType(() => ({
+  name: "Hashnode",
+  filePathPattern: "hashnode.json",
+  fields: {
+    posts: {
+      type: "list",
+      of: defineNestedType(() => ({
+        name: "HashnodePost",
+        fields: {
+          _id: { type: "string", required: true },
+          slug: { type: "string", required: true },
+          title: { type: "string", required: true },
+          brief: { type: "string", required: true },
+          coverImage: { type: "string", required: true },
+          dateAdded: { type: "date", required: true },
+          readingTime: {
+            type: "json",
+            required: true,
+          },
+          wordCount: { type: "number", required: true },
+        },
+      })),
+    },
+    domain: { type: "string", required: true },
+  },
+}));
+
+export const KProvider = defineDocumentType(() => ({
+  name: "KProvider",
+  filePathPattern: "kprovider.json",
+  fields: {
+    skills: {
+      type: "list",
+      of: defineNestedType(() => ({
+        name: "Skill",
+        fields: {
+          id: { type: "number", required: true },
+          name: { type: "string", required: true },
+          slug: { type: "string", required: true },
+          iconSVG: { type: "string", required: true },
+        },
+      })),
+    },
+    projects: {
+      type: "list",
+      of: defineNestedType(() => ({
+        name: "Project",
+        fields: {
+          id: { type: "number", required: true },
+          name: { type: "string", required: true },
+          slug: { type: "string", required: true },
+        },
+      })),
+    },
+  },
+}));
+
 export default makeSource({
   contentDirPath: "data",
-  documentTypes: [Project, BlogPost, Achievement],
+  documentTypes: [Project, BlogPost, Achievement, Hashnode, KProvider],
   mdx: {
     rehypePlugins: [
       rehypeSlug,

@@ -41,3 +41,7 @@ It is currently a simple portfolio site with a project showcase and a blog posts
 
 ## Contributing
 Found some issue with the website? Please open a issue or a pull request!
+
+Removed content...........
+"prebuild": "yarn gen:hashnode", // from package.json
+
